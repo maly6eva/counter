@@ -38,7 +38,7 @@ function App() {
 
     return (
         <div className="App">
-            <Todolist title={'Удачной работы!   🧚🏻‍♀️⭐️🦁🦄💪🌞🐬🧘‍♂️☘️'} tasks={taskForTodolist} removeTask={removeTask}
+            <Todolist title={'Удачной работы!  🦁'} tasks={taskForTodolist} removeTask={removeTask}
                       addTasks={addTasks}/>
         </div>
     );

@@ -49,8 +49,11 @@ export const Todolist = ({title, tasks, removeTask, addTasks}: TodolistPropsType
             <div>
                 <input type={'number'}
                        placeholder={'Вводи числа'}
-                       value={taskTitle} onChange={handleInputChange}/>
-                <Button title={'Добавить'} onClick={handleAddNumber}/>
+                       value={taskTitle}
+                       onChange={handleInputChange}/>
+
+                <Button title={'+'} onClick={handleAddNumber}/>
+
             </div>
             <h4>Вся сумма: {totalDigitsSum}</h4>
             {tasks.length === 0 ? (
@@ -60,7 +63,8 @@ export const Todolist = ({title, tasks, removeTask, addTasks}: TodolistPropsType
                     {numbers.map((num, index) => {
                         return (
                             <li key={index}>
-                                <input type='text' placeholder={'Место для заметок'}/>
+                                <input type='text' placeholder={'для заметок'}
+                                       />
                                 {num}<Button title={'+'} onClick={() => handleRemoveNumber(num)}/>
                             </li>
                         )
