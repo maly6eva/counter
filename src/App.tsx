@@ -4,15 +4,11 @@ import {TaskPropsType, Todolist} from "./Todolist";
 import {v1} from "uuid";
 
 
-export type TaskFilterPropsType = 'Полный список' | 'Эксклюзивный' | 'Обычный';
+export type TaskFilterPropsType = 'Полный список' | 'Эксклюзивный' | 'Обычный' | 'Итого';
 
 function App() {
 
     let [tasks, setTasks] = useState<TaskPropsType[]>([
-        // {id: v1(), title: 'HTML&CSS', isDone: true},
-        // {id: v1(), title: 'JS', isDone: true},
-        // {id: v1(), title: 'ReactJS', isDone: false},
-        // {id: v1(), title: 'ReachjJS', isDone: false},
     ])
 
     const removeTask = (taskId: string) => {
@@ -23,9 +19,6 @@ function App() {
     }
 
     let [filter, setFilter] = useState<TaskFilterPropsType>('Полный список')
-    const changeTask = (filter: TaskFilterPropsType) => {
-        setFilter(filter)
-    }
 
     let taskForTodolist = tasks
     if (filter === 'Эксклюзивный') {
@@ -35,8 +28,9 @@ function App() {
         taskForTodolist = tasks.filter(t => !t.isDone)
     }
 
-    const addTasks = (title: string) => {
-        let newTask = {id: v1(), title: title, isDone: false}
+
+    const addTasks = (numberId: number) => {
+        let newTask = {id: v1(), title: numberId.toString(), isDone: false}
         let newTasks = [newTask, ...tasks]
         setTasks(newTasks)
     }
@@ -44,7 +38,7 @@ function App() {
 
     return (
         <div className="App">
-            <Todolist title={'Удачной работы!'} tasks={taskForTodolist} removeTask={removeTask} changeTask={changeTask}
+            <Todolist title={'Удачной работы!   🧚🏻‍♀️⭐️🦁🦄💪🌞🐬🧘‍♂️☘️'} tasks={taskForTodolist} removeTask={removeTask}
                       addTasks={addTasks}/>
         </div>
     );

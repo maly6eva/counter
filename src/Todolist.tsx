@@ -7,8 +7,7 @@ type TodolistPropsType = {
     title: string,
     tasks: TaskPropsType[],
     removeTask: (taskId: string) => void
-    changeTask: (filter: TaskFilterPropsType) => void
-    addTasks: (title: string) => void
+    addTasks: (numberId: number) => void
 }
 
 export type TaskPropsType = {
@@ -17,47 +16,57 @@ export type TaskPropsType = {
     isDone: boolean
 }
 
-export const Todolist = ({title, tasks, removeTask, changeTask, addTasks}: TodolistPropsType) => {
-    const [taskTitle, setTaskTitle] = useState('')
+export const Todolist = ({title, tasks, removeTask, addTasks}: TodolistPropsType) => {
+    const [taskTitle, setTaskTitle] = useState<number | ''>('')
+    const [numbers, setNumbers] = useState<number[]>([])
+
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.currentTarget.value
+        setTaskTitle(value === '' ? '' : Number(value))
+    }
+
+
+    const handleAddNumber = () => {
+        if (taskTitle !== '' && !isNaN(taskTitle)) {
+            setNumbers((prev) => [...prev, taskTitle])
+            addTasks(taskTitle)
+            setTaskTitle('')
+        }
+    }
+
+    const handleRemoveNumber = (numToRemove: number) => {
+        setNumbers((prev) => prev.filter((num) => num !== numToRemove))
+    }
+
+    const totalDigitsSum = numbers
+        .reduce((sum, digit) => sum + digit, 0)
+
 
     return (
         <div>
             <h3>{title}</h3>
             <div>
-                <input value={taskTitle} onChange={(e) => setTaskTitle(e.currentTarget.value)}/>
-                <Button title={'+'}
-                        onClick={() => {
-                            addTasks(taskTitle)
-                            setTaskTitle('')
-                        }}/>
-                {/*<button>+</button>*/}
+                <input type={'number'}
+                       placeholder={'Вводи числа'}
+                       value={taskTitle} onChange={handleInputChange}/>
+                <Button title={'Добавить'} onClick={handleAddNumber}/>
             </div>
-
+            <h4>Вся сумма: {totalDigitsSum}</h4>
             {tasks.length === 0 ? (
-                <p>Список пуст</p>
+                <p>Список пуст 😜</p>
             ) : (
                 <ol>
-                    {tasks.map(task => {
+                    {numbers.map((num, index) => {
                         return (
-                            <li key={task.id}>
-                                <input type="checkbox"
-                                       checked={task.isDone}/>
-                                <span>{task.title}</span>
-                                <Button title={'+'} onClick={() => removeTask(task.id)}/>
-                                {/*<button onClick={() =>removeTask(task.id)}>+</button>*/}
+                            <li key={index}>
+                                <input type='text' placeholder={'Место для заметок'}/>
+                                {num}<Button title={'+'} onClick={() => handleRemoveNumber(num)}/>
                             </li>
                         )
                     })}
                 </ol>
             )}
-            <div>
-                {/*<button>All</button>*/}
-                {/*<button>Active</button>*/}
-                {/*<button>Completed</button>*/}
-                <Button title={'Полный список'} onClick={() => changeTask('Полный список')}/>
-                <Button title={'Эксклюзивный'} onClick={() => changeTask('Эксклюзивный')}/>
-                <Button title={'Обычный'} onClick={() => changeTask('Обычный')}/>
-            </div>
         </div>
     );
 };
